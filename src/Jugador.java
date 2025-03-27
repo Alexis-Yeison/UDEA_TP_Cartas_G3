@@ -21,13 +21,43 @@ public class Jugador {
         pnl.removeAll();
 
 
-        int pos = MARGEN;
+        int pos = MARGEN + (TOTAL_CARTAS - 1) * DISTANCIA;
 
         for(Carta carta : cartas){
             carta.mostrar(pnl, pos, MARGEN);
-            pos += DISTANCIA;
+            pos -= DISTANCIA;
         }
 
         pnl.repaint();
+    }
+
+    public String getGrupos(){
+        String msg = "No se encontraron grupos";
+
+        int[] contadores = new int[NombreCarta.values().length];
+        for(Carta carta : cartas){
+            contadores[carta.getNombre().ordinal()] ++;
+        }
+
+        boolean hayGrupos = false;
+        for(int contador : contadores){
+            if(contador >= 2){
+                hayGrupos = true;
+                break;
+            }
+        }
+
+        if(hayGrupos){
+            msg = "Se encontraron los siguientes grupos:\n";
+            int index = 0;
+            for(int contador : contadores){
+                if(contador >= 2){
+                    msg += Grupo.values()[contador] + " DE " + NombreCarta.values()[index] + "\n";
+                }
+                index ++;
+            }
+        }
+
+        return msg;
     }
 }
