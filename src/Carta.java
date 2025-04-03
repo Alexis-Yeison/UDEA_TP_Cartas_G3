@@ -36,13 +36,13 @@ public class Carta {
 
     public Pinta getPinta(){
         if(indice <= 13){
-            return Pinta.TREBOL;
+            return Pinta.TREBOLES;
         }else if(indice <= 26){
-            return Pinta.PICA;
+            return Pinta.PICAS;
         }else if(indice <= 39){
-            return Pinta.CORAZON;
+            return Pinta.CORAZONES;
         }else{
-            return Pinta.DIAMANTE;
+            return Pinta.DIAMANTES;
         }
     }
 
