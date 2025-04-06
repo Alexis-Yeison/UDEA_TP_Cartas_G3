@@ -98,19 +98,19 @@ public class Jugador {
                 /* En cada iteracion se verificará que el valor de la posicion i,j
                  * en la matriz sea 1 y hay dos posibles casos:
                  * 
-                 * caso 1: se encuentran 3 posiciones con valor == 1 y la siguiente pos con
+                 * caso 1: se encuentran 2 posiciones con valor == 1 y la siguiente pos con
                  * valor == 0, se entrará por el condicional else y se verificará si el
-                 * contador es mayor o igual a 3 y guardará el mensaje con la pinta y la escalera
+                 * contador es mayor o igual a 2 y guardará el mensaje con la pinta y la escalera
                  * encontrada
                  * 
-                 * caso 2: se encuentran 2 pos con valor == 1 y la siguiente pos con
+                 * caso 2: se encuentran 1 pos con valor == 1 y la siguiente pos con
                  * valor == 0, se entrará por el condicional else y se romperá la secuencia
-                 * ya que el contador no tuvo un valor mayor o igual que 3
+                 * ya que el contador no tuvo un valor mayor o igual que 2
                  * ya que no se cumple el condicional if, entonces se debe reiniciar el contador
                  * y los nombres de las cartas almacenadas en la variable escalera
                  */
                 }else{
-                    if(contador >= 3){ // Si hay 3 o más cartas seguidas, es una escalera
+                    if(contador >= 2){ // Si hay 2 o más cartas seguidas, es una escalera
                         msg += "ESCALERA DE " + Pinta.values()[i] + ": " + escalera + "\n";
                         hayEscaleras = true;
                     }
@@ -120,13 +120,13 @@ public class Jugador {
             }
             /* Si el ciclo for que recorré la posicion de las columnas j, llega hasta el final
              * de la fila entonces también se debe verificar si el contador alcanzó un valor mayor o
-             * igual que 3 (este caso aplica cuando por ejemplo se está en la pos
+             * igual que 2 (este caso aplica cuando por ejemplo se está en la pos
              * i = 0 -> primera fila
              * j = 12 -> último valor de la fila)
-             * si los valores de las posiciones 10, 11 y 12 están en 1 en la matriz
+             * si los valores de las posiciones 11 y 12 están en 1 en la matriz
              * entonces se utiliza el condicional para agregar la escalera
              */
-            if(contador >= 3){
+            if(contador >= 2){
                 msg += "ESCALERA DE " + Pinta.values()[i] + ": " + escalera + "\n";
                 hayEscaleras = true;
             }
@@ -174,8 +174,8 @@ public class Jugador {
                     }
                     contador ++;
                 }else{
-                    // Si hay una secuencia de 3 o más cartas seguidas, se marca como escalera
-                    if(contador >= 3){
+                    // Si hay una secuencia de 2 o más cartas seguidas, se marca como escalera
+                    if(contador >= 2){
                         for(int k = inicio; k < inicio + contador; k++){
                             for(int c = 0; c < cartas.length; c++){
                                 if(cartas[c].getPinta().ordinal() == pinta && cartas[c].getNombre().ordinal() == k){
@@ -188,7 +188,7 @@ public class Jugador {
                 }
             }
             // Si la escalera se encuentra al final de la fila se debe verificar y marcar también
-            if(contador >= 3){
+            if(contador >= 2){
                 for(int k = inicio; k < inicio + contador; k++){
                     for(int c = 0; c < cartas.length; c++){
                         if(cartas[c].getPinta().ordinal() == pinta && cartas[c].getNombre().ordinal() == k){
