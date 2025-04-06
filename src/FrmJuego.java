@@ -84,16 +84,39 @@ public class FrmJuego extends JFrame {
         
     }
 
-    // Método para verificar los pares...
+    // Método para mostrar el ganador del juego
+    private void mostrarGanador(){
+        int puntaje1 = jugador1.getPuntaje(); // Llamamos al método getPuntaje para obtener el puntaje de ambos jugadores
+        int puntaje2 = jugador2.getPuntaje();
+
+        // Mensaje inicial que mostrará el puntaje de cada jugador
+        String mensaje = "Puntaje Jugador 1: " + puntaje1 + "\n" +
+                         "Puntaje Jugador 2: " + puntaje2 + "\n";
+
+        // Condicional para saber que jugador obtuvo menor puntaje y concatenar el texto del ganador en el string mensaje
+        if(puntaje1 < puntaje2){
+            mensaje += "Ganador: Jugador 1";
+        }else if(puntaje2 < puntaje1){
+            mensaje += "Ganador: Jugador 2";
+        }else{
+            mensaje += "Empate";
+        }
+        
+        // Muestra el resultado con showMessageDialog (y este método es llamado desde btnVerificarClick)
+        JOptionPane.showMessageDialog(null, mensaje, "Resultado final", JOptionPane.INFORMATION_MESSAGE);
+    }
+    // Método para verificar
     private void btnVerificarClick(ActionEvent evt) {
         switch(tpJugadores.getSelectedIndex()){
             case 0:
                 JOptionPane.showMessageDialog(null, jugador1.getGrupos());
                 JOptionPane.showMessageDialog(null, jugador1.getEscalera());
+                mostrarGanador();
                 break;
             case 1:
                 JOptionPane.showMessageDialog(null, jugador2.getGrupos());
                 JOptionPane.showMessageDialog(null, jugador2.getEscalera());
+                mostrarGanador();
                 break;
         }
     }

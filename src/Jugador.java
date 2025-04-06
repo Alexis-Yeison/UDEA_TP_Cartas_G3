@@ -61,10 +61,6 @@ public class Jugador {
         return msg;
     }
 
-    /* Se define el nuevo método getEscalera dentro
-     * de la clase jugador, se inicializa con un String vacío donde
-     * se guadará la información recolectada
-     */
     public String getEscalera(){
         
         /* Se crea una matriz que tendrá tamaño 4x13
@@ -137,5 +133,93 @@ public class Jugador {
 
         }
         return hayEscaleras ? msg : "NO SE ENCONTRARON ESCALERAS";
+    }
+
+    // Método para obtener el puntaje
+    public int getPuntaje(){
+        /* Puntaje -> lleva el conteo del puntaje de cada jugador
+         * cartaMarcada -> un booleano que indica si una carta del mazo del jugador ya está en grupo o escalera y se marcará como "usada"
+         * contadores -> es un arreglo que permite contar cuantas veces aparece cada tipo de carta en el mazo del jugador
+         * cartaPorPinta -> matriz que permite la busqueda de escaleras (igual que en el método getEscalera)
+         */
+        int puntaje = 0;
+        boolean[] cartaMarcada = new boolean[cartas.length];
+        int[] contadores = new int[NombreCarta.values().length];
+        int[][] cartaPorPinta = new int[Pinta.values().length][NombreCarta.values().length];
+
+        // Ciclo for para recorrer las cartas del jugador
+        for(int i = 0; i < cartas.length; i++){
+            contadores[cartas[i].getNombre().ordinal()]++; // Cuenta cuantas veces aparece el nombre de la carta en posicion "i"
+            cartaPorPinta[cartas[i].getPinta().ordinal()][cartas[i].getNombre().ordinal()] = 1; // Se marca en la matriz que esa carta existe en la posision "i"
+        }
+
+        // Ciclo para marcar las cartas en grupos (pares, ternas, cuartas...)
+        for(int i = 0; i < NombreCarta.values().length; i++){
+            if(contadores[i] >= 2){
+                for(int j = 0; j < cartas.length; j++){
+                    if(cartas[j].getNombre().ordinal() == i){
+                        cartaMarcada[j] = true;
+                    }
+                }
+            }
+        }
+
+        // Ciclo para marcar las cartas en escaleras
+        for(int pinta = 0; pinta < Pinta.values().length; pinta++){
+            int contador = 0, inicio = -1;
+            for(int nombre = 0; nombre < NombreCarta.values().length; nombre++){
+                if(cartaPorPinta[pinta][nombre] == 1){
+                    if(contador == 0){
+                        inicio = nombre;
+                    }
+                    contador ++;
+                }else{
+                    // Si hay una secuencia de 3 o más cartas seguidas, se marca como escalera
+                    if(contador >= 3){
+                        for(int k = inicio; k < inicio + contador; k++){
+                            for(int c = 0; c < cartas.length; c++){
+                                if(cartas[c].getPinta().ordinal() == pinta && cartas[c].getNombre().ordinal() == k){
+                                    cartaMarcada[c] = true;
+                                }
+                            }
+                        }
+                    }
+                    contador = 0;
+                }
+            }
+            // Si la escalera se encuentra al final de la fila se debe verificar y marcar también
+            if(contador >= 3){
+                for(int k = inicio; k < inicio + contador; k++){
+                    for(int c = 0; c < cartas.length; c++){
+                        if(cartas[c].getPinta().ordinal() == pinta && cartas[c].getNombre().ordinal() == k){
+                            cartaMarcada[c] = true;
+                        }
+                    }
+                }
+            }
+        }
+        /* Aqui se define el puntaje que sumará cada carta marcada
+         * esta lógica dice basicamente que si la carta NO está marcada como usada, entonces significa que está sola
+         * si es AS, JACK, QUEEN o KING sumará 10 puntos
+         * si es una carta normal entonces se sumará su posicion ordinal + 1 que sería el número de la carta, ej: 5 de picas, pos ordinal: 4, puntaje = 4 + 1
+         * finalmente se devuelve el puntaje y se usa otro método en FrmJuego para mostrar el ganador
+         */
+        for(int i = 0; i < cartas.length; i++){
+            if(!cartaMarcada[i]){
+                NombreCarta nombre = cartas[i].getNombre();
+                switch(nombre){
+                    case AS:
+                    case JACK:
+                    case QUEEN:
+                    case KING:
+                        puntaje += 10;
+                        break;        
+                    default:
+                        puntaje += nombre.ordinal() + 1;
+                        break;
+                }
+            }
+        }
+        return puntaje;
     }
 }
